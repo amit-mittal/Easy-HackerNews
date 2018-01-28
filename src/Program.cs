@@ -19,8 +19,8 @@ namespace EasyHackerNews
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
 
             f = new Form1();
             HackerNewsManager m = new HackerNewsManager();
@@ -29,15 +29,17 @@ namespace EasyHackerNews
             ColumnHeader header1 = new ColumnHeader();
             header1.Name = "col1";
             header1.Text = "Title";
-            header1.Width = 300;
+            header1.Width = 317;
             ColumnHeader header2 = new ColumnHeader();
             header2.Name = "col2";
             header2.Text = "Points";
             header2.Width = 50;
+            header2.TextAlign = HorizontalAlignment.Center;
             ColumnHeader header3 = new ColumnHeader();
             header3.Name = "col3";
             header3.Text = "Comments";
             header3.Width = 70;
+            header3.TextAlign = HorizontalAlignment.Center;
 
             SetHeight(f.listView1, 20);
 
