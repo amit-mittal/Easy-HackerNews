@@ -24,14 +24,16 @@ namespace EasyHackerNews
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
+            using (HttpWebResponse response = (HttpWebResponse) request.GetResponse())
             {
-                html = reader.ReadToEnd();
+                using (Stream stream = response.GetResponseStream())
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        html = reader.ReadToEnd();
+                    }
+                }
             }
-
-            Console.WriteLine(html);
 
             var items = JsonConvert.DeserializeObject<JArray>(html);
             foreach (var item in items)
@@ -39,8 +41,9 @@ namespace EasyHackerNews
                 HackerNews news = new HackerNews();
                 news.title = (string) item["title"];
                 news.url = (string) item["url"];
-                news.points = 0; //(item["points"] == null ? 0 : (int) item["points"])
-                news.comments_count = 55;
+                // BUG: Possibly these items can be null, check what's the value
+                news.points = (item["points"] == null ? 0 : (int) item["points"]);
+                news.comments_count = (item["comments_count"] == null ? 0 : (int)item["comments_count"]);
 
                 newsList.Add(news);
             }
