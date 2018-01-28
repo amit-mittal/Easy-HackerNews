@@ -40,6 +40,7 @@ namespace EasyHackerNews
                 news.title = (string) item["title"];
                 news.url = (string) item["url"];
                 news.points = 0; //(item["points"] == null ? 0 : (int) item["points"])
+                news.comments_count = 55;
 
                 newsList.Add(news);
             }

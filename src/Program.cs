@@ -26,15 +26,45 @@ namespace EasyHackerNews
             HackerNewsManager m = new HackerNewsManager();
             list = m.DoWork();
 
+            ColumnHeader header1 = new ColumnHeader();
+            header1.Name = "col1";
+            header1.Text = "Title";
+            header1.Width = 300;
+            ColumnHeader header2 = new ColumnHeader();
+            header2.Name = "col2";
+            header2.Text = "Points";
+            header2.Width = 50;
+            ColumnHeader header3 = new ColumnHeader();
+            header3.Name = "col3";
+            header3.Text = "Comments";
+            header3.Width = 70;
+
+            SetHeight(f.listView1, 20);
+
+            f.listView1.Columns.Add(header1);
+            f.listView1.Columns.Add(header2);
+            f.listView1.Columns.Add(header3);
+
             foreach (HackerNews news in list)
             {
-                ListViewItem listItem = new ListViewItem(news.title);
+                ListViewItem listItem = new ListViewItem();
                 f.listView1.Items.Add(listItem);
+                listItem.Text = news.title;
+                listItem.SubItems.Add(news.points.ToString());
+                listItem.SubItems.Add(news.comments_count.ToString());
             }
 
             f.listView1.SelectedIndexChanged += _listBox1_SelectedIndexChanged;
+            f.listView1.ColumnWidthChanging += listView1_ColumnWidthChanging;
 
             Application.Run(f);
+        }
+
+        private static void SetHeight(ListView listView, int height)
+        {
+            ImageList imgList = new ImageList();
+            imgList.ImageSize = new Size(1, height);
+            listView.SmallImageList = imgList;
         }
 
         private static void _listBox1_SelectedIndexChanged(object pSender, EventArgs pArgs)
@@ -45,6 +75,12 @@ namespace EasyHackerNews
             {
                 Process.Start(list[item.Index].url);
             }
+        }
+
+        private static void listView1_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.NewWidth = f.listView1.Columns[e.ColumnIndex].Width;
+            e.Cancel = true;
         }
     }
 }
