@@ -38,13 +38,7 @@ namespace EasyHackerNews
             var items = JsonConvert.DeserializeObject<JArray>(html);
             foreach (var item in items)
             {
-                HackerNews news = new HackerNews();
-                news.title = (string) item["title"];
-                news.url = (string) item["url"];
-                // BUG: Possibly these items can be null, check what's the value
-                news.points = (item["points"] == null ? 0 : (int) item["points"]);
-                news.comments_count = (item["comments_count"] == null ? 0 : (int)item["comments_count"]);
-
+                var news = item.ToObject<HackerNews>();
                 newsList.Add(news);
             }
 
@@ -70,7 +64,7 @@ namespace EasyHackerNews
 
         public string title;
 
-        public int points;
+        public int? points;
 
         public string user;
 
@@ -78,7 +72,7 @@ namespace EasyHackerNews
 
         public string time_ago;
 
-        public int comments_count;
+        public int? comments_count;
 
         public string type;
 
